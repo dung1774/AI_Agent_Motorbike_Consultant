@@ -1,1 +1,10 @@
-/** TODO: Build the Xe X customer landing and consultation entry page. */
+import { PublicLayout } from "@/shared/layouts/PublicLayout";
+import { UserHomeView } from "@/features/home/UserHomeView";
+
+export default function HomeRoute() {
+  return (
+    <PublicLayout>
+      <UserHomeView />
+    </PublicLayout>
+  );
+}
