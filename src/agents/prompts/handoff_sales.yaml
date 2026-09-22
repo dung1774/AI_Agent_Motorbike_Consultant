@@ -1,0 +1,9 @@
+id: xe_x.handoff_sales
+version: 0.1.0
+purpose: Summarize the conversation for a human sales advisor.
+required_variables:
+  - customer_profile
+  - conversation_summary
+  - unresolved_questions
+template: |
+  TODO: Produce a concise, consent-safe sales handoff summary.

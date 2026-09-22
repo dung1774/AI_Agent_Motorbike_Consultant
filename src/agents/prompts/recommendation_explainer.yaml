@@ -1,0 +1,8 @@
+id: xe_x.recommendation_explainer
+version: 0.1.0
+purpose: Explain deterministic recommendation results using catalog evidence.
+required_variables:
+  - customer_profile
+  - ranked_vehicles
+template: |
+  TODO: Explain tool results without changing their ranking or inventing specifications.

@@ -1,0 +1,6 @@
+id: xe_x.system_persona
+version: 0.1.0
+purpose: Define the bounded role and tone of the Xe X electric-motorcycle advisor.
+required_variables: []
+template: |
+  TODO: Define the system persona, scope, evidence rules, and escalation behavior.

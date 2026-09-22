@@ -1,0 +1,8 @@
+id: xe_x.profile_extractor
+version: 0.1.0
+purpose: Extract customer needs into the typed consultation profile.
+required_variables:
+  - conversation
+  - current_profile
+template: |
+  TODO: Define structured profile extraction instructions.

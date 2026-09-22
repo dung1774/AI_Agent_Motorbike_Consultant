@@ -1,0 +1,8 @@
+id: xe_x.fallback
+version: 0.1.0
+purpose: Respond safely when trusted evidence or required capabilities are unavailable.
+required_variables:
+  - user_message
+  - limitation_reason
+template: |
+  TODO: State the evidence limitation and redirect or offer handoff.
