@@ -6,28 +6,39 @@ Interactive, mobile-first Next.js demo for the Xe X electric motorbike consultat
 
 Frontend này chạy độc lập bằng dữ liệu mock; không cần bật FastAPI, database hoặc cấu hình API key.
 
-Các lệnh dưới đây đã được kiểm tra với Node.js `v24.19.0` và pnpm `11.19.0`. Cài Node.js trước nếu PowerShell báo không nhận lệnh `node`. Sau khi cài, mở **cửa sổ terminal mới** và kiểm tra:
+### 1. Cài Node.js và pnpm (chỉ làm một lần trên mỗi máy)
+
+Tải **Node.js 24 LTS** từ [trang tải chính thức của Node.js](https://nodejs.org/en/download), chọn bản cài đặt Windows và chạy trình cài đặt. Node.js đi kèm `npm`. Sau khi cài, **đóng PowerShell cũ và mở cửa sổ mới**, rồi kiểm tra:
 
 ```powershell
 node --version
 npm --version
+```
+
+Nếu PowerShell vẫn báo không nhận `node` hoặc `npm`, kiểm tra lại quá trình cài Node.js và mở terminal mới. Tiếp theo cài pnpm bằng npm:
+
+```powershell
+npm install --global pnpm@11.19.0
 pnpm --version
 ```
 
-Nếu chỉ thiếu `pnpm`, cài bằng `npm install --global pnpm@11.19.0`, rồi mở terminal mới và chạy lại `pnpm --version`.
+Các lệnh của dự án đã được kiểm tra với Node.js `v24.19.0` và pnpm `11.19.0`. Nếu lệnh `pnpm` chưa được nhận sau khi cài, mở PowerShell mới rồi thử lại. Thông báo có phiên bản pnpm mới chỉ là gợi ý cập nhật, không cản trở chạy dự án.
 
-Trong **PowerShell**, vào đúng thư mục chứa `package.json` của frontend:
+### 2. Cài Next.js và chạy dự án
+
+Sau khi clone, mở **PowerShell tại thư mục gốc của repo** (thư mục chứa `frontend`), rồi chạy:
 
 ```powershell
-Set-Location -LiteralPath 'C:\Users\DELL\Desktop\VinUni\AI_Agent_Motorbike_Consultant\frontend'
+Set-Location -LiteralPath '.\frontend'
 Test-Path -LiteralPath 'package.json'
 pnpm install --frozen-lockfile
+pnpm exec next --version
 pnpm dev
 ```
 
-`Test-Path` phải trả về `True`. Giữ terminal chạy và mở URL hiện ở dòng `Local:` (thông thường là <http://localhost:3000>). Dừng server bằng `Ctrl+C`. Nếu bạn dùng **Git Bash / MINGW64**, lệnh vào thư mục tương ứng là `cd /c/Users/DELL/Desktop/VinUni/AI_Agent_Motorbike_Consultant/frontend`; ba lệnh còn lại giữ nguyên.
+`Test-Path` phải trả về `True`. Lệnh `pnpm install --frozen-lockfile` sẽ tự cài **Next.js 15.5.10**, React và các thư viện được khai báo trong `package.json` vào `frontend/node_modules`; `pnpm exec next --version` xác nhận phiên bản đã cài. Không cần cài Next.js toàn cục hoặc tạo lại dự án bằng `create-next-app` ([hướng dẫn Next.js](https://nextjs.org/docs/app/getting-started/installation)). Giữ terminal chạy và mở URL hiện ở dòng `Local:` (thông thường là <http://localhost:3000>). Dừng server bằng `Ctrl+C`. Nếu bạn dùng **Git Bash / MINGW64**, thay lệnh `Set-Location` bằng `cd frontend`; các lệnh còn lại giữ nguyên.
 
-Nếu cổng `3000` đang được sử dụng, dừng server cũ hoặc chạy `pnpm exec next dev -p 3001` và mở <http://localhost:3001>. Không chạy `pnpm dev` ở thư mục gốc `AI_Agent_Motorbike_Consultant`, vì `package.json` nằm trong `frontend`.
+Nếu cổng `3000` đang được sử dụng, dừng server cũ hoặc chạy `pnpm exec next dev -p 3001` và mở <http://localhost:3001>. Không chạy `pnpm dev` ở thư mục gốc của repo, vì `package.json` nằm trong `frontend`.
 
 Để kiểm tra mã nguồn, dừng dev server trước rồi chạy `pnpm run typecheck` và `pnpm run build`. Muốn chạy bản production, dùng `pnpm start` **sau khi** build thành công; `pnpm start` không thay cho `pnpm dev` ở lần chạy đầu.
 
