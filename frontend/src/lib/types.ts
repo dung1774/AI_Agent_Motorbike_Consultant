@@ -1,4 +1,5 @@
 export type UseCase = "Đi học" | "Đi làm" | "Giao hàng" | "Đi phố";
+export type Charging = "home" | "work" | "limited";
 
 export interface Vehicle {
   id: string;
@@ -9,47 +10,22 @@ export interface Vehicle {
   rangeKm: number;
   batteryKwh: number;
   chargeHours: number;
-  powerKw: number;
-  topSpeedKmh: number;
-  colors: string[];
   accent: string;
   bestFor: UseCase[];
-  highlights: string[];
   sourceLabel: string;
   sourceUpdatedAt: string;
-}
-
-export interface Store {
-  id: string;
-  name: string;
-  address: string;
-  district: string;
-  distanceKm: number;
-  phone: string;
-  hours: string;
-  availableVehicleIds: string[];
-}
-
-export type ChatRole = "agent" | "user";
-
-export interface ChatMessage {
-  id: string;
-  role: ChatRole;
-  content: string;
-  createdAt: string;
-  source?: string;
+  officialUrl?: string | null;
 }
 
 export interface ConsultationProfile {
   purpose?: UseCase;
   dailyKm?: number;
   budgetMax?: number;
-  charging?: "home" | "work" | "limited";
+  charging?: Charging;
 }
 
 export interface Recommendation {
   vehicle: Vehicle;
-  score: number;
   reasons: string[];
 }
 
@@ -64,52 +40,11 @@ export interface CostInputs {
 
 export interface CostResult {
   monthlyKm: number;
+  electricPerKm: number;
+  petrolPerKm: number;
   electricMonthly: number;
   petrolMonthly: number;
-  savingMonthly: number;
-  savingYearly: number;
-}
-
-export interface InstallmentInputs {
-  vehiclePrice: number;
-  downPaymentPercent: number;
-  termMonths: number;
-  annualInterestPercent: number;
-}
-
-export interface InstallmentResult {
-  downPayment: number;
-  principal: number;
-  monthlyPayment: number;
-  totalInterest: number;
-  totalPayment: number;
-}
-
-export type LeadStatus = "new" | "contacted" | "resolved";
-
-export interface SalesLead {
-  id: string;
-  customerName: string;
-  phone: string;
-  purpose: UseCase;
-  budgetLabel: string;
-  dailyKm: number;
-  interestedVehicleIds: string[];
-  summary: string;
-  unresolvedQuestions: string[];
-  status: LeadStatus;
-  createdAt: string;
-}
-
-export type LeadCreateInput = Omit<SalesLead, "id" | "status" | "createdAt">;
-
-export interface DepositRequest {
-  vehicleId: string;
-  storeId: string;
-  customerName: string;
-  phone: string;
-  email: string;
-  note: string;
+  differenceMonthly: number;
 }
 
 export interface ServiceResult<T> {

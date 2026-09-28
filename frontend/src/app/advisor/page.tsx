@@ -1,13 +1,6 @@
-import { ProtectedRoute } from "@/shared/guards/ProtectedRoute";
-import { UserLayout } from "@/shared/layouts/UserLayout";
+import { PublicLayout } from "@/shared/layouts/PublicLayout";
 import { ConsultationView } from "@/features/consultation/ConsultationView";
 
 export default function AdvisorRoute() {
-  return (
-    <ProtectedRoute allowedRoles={["user"]}>
-      <UserLayout>
-        <ConsultationView />
-      </UserLayout>
-    </ProtectedRoute>
-  );
+  return <PublicLayout><ConsultationView /></PublicLayout>;
 }

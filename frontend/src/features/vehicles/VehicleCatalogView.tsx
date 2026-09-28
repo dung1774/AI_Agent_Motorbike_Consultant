@@ -1,16 +1,12 @@
 import { VehicleCatalog } from "./VehicleCatalog";
+import Link from "next/link";
 
 export function VehicleCatalogView() {
   return (
-    <div className="page">
+    <div className="page compact-page">
       <div className="container">
-        <header className="page-title">
-          <span className="eyebrow">Catalog xe minh họa</span>
-          <h1>Chọn mẫu xe cho hành trình của bạn</h1>
-          <p>
-            Thông số và mức giá hiện là dữ liệu demo. Mỗi mẫu xe đều có thể xem chi tiết, đưa vào bảng so sánh hoặc đăng ký giữ xe.
-          </p>
-        </header>
+        <h1 className="sr-only">Mẫu xe Xe X</h1>
+        <div className="cluster route-actions"><Link className="button button-secondary" href="/compare">So sánh mẫu xe</Link><Link className="button button-secondary" href="/installment">Ước tính trả góp</Link></div>
         <VehicleCatalog />
       </div>
     </div>

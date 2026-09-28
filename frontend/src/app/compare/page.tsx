@@ -1,13 +1,3 @@
-import { ProtectedRoute } from "@/shared/guards/ProtectedRoute";
-import { UserLayout } from "@/shared/layouts/UserLayout";
-import { VehicleComparisonView } from "@/features/vehicles/VehicleComparisonView";
-
-export default function CompareRoute() {
-  return (
-    <ProtectedRoute allowedRoles={["user"]}>
-      <UserLayout>
-        <VehicleComparisonView />
-      </UserLayout>
-    </ProtectedRoute>
-  );
-}
+import { VehicleCompareView } from "@/features/comparison/VehicleCompareView";
+import { PublicLayout } from "@/shared/layouts/PublicLayout";
+export default function ComparePage() { return <PublicLayout><VehicleCompareView /></PublicLayout>; }

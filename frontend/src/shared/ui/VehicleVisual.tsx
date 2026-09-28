@@ -1,21 +1,23 @@
-import type { CSSProperties } from "react";
+import Image from "next/image";
+import type { Vehicle } from "@/lib/types";
 
-export function VehicleVisual({ accent = "#95e949", compact = false }: { accent?: string; compact?: boolean }) {
+const vehicleImages: Record<string, string> = {
+  "xe-x-lite": "/images/xe-x-lite.png",
+  "xe-x-city": "/images/xe-x-city.png",
+  "xe-x-flow": "/images/xe-x-flow.png",
+  "xe-x-pro": "/images/xe-x-pro.png",
+};
+
+export function VehicleVisual({ vehicle, compact = false, priority = false }: { vehicle: Vehicle; compact?: boolean; priority?: boolean }) {
   return (
-    <div
-      className={`vehicle-visual ${compact ? "vehicle-visual--compact" : ""}`}
-      style={{ "--vehicle-accent": accent } as CSSProperties}
-      aria-hidden="true"
-    >
-      <span className="vehicle-glow" />
-      <span className="wheel wheel-left" />
-      <span className="wheel wheel-right" />
-      <span className="scooter-body" />
-      <span className="scooter-deck" />
-      <span className="scooter-seat" />
-      <span className="scooter-stem" />
-      <span className="scooter-handle" />
-      <span className="scooter-light" />
+    <div className={`vehicle-visual ${compact ? "vehicle-visual--compact" : ""}`}>
+      <Image
+        src={vehicleImages[vehicle.id] ?? vehicleImages["xe-x-city"]}
+        alt={`Hình minh họa ${vehicle.name}`}
+        fill
+        sizes={compact ? "(max-width: 640px) 100vw, 360px" : "(max-width: 900px) 100vw, 740px"}
+        priority={priority}
+      />
     </div>
   );
 }

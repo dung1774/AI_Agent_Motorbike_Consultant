@@ -1,82 +1,28 @@
-# Xe X frontend
+# Xe X frontend — luồng demo theo kiến trúc
 
-Interactive, mobile-first Next.js demo for the Xe X electric motorbike consultation journey. This frontend runs independently with local mock data and mock services; it does not call FastAPI, a database, or an LLM.
+Frontend có luồng khách từ tư vấn, catalog, so sánh, chi phí, trả góp/cọc mô phỏng, cửa hàng, lịch sử đến màn hình nhân viên riêng tại `/staff`. Trang chủ giữ nội dung chính và đã cải thiện bố cục. Các trang đăng nhập/đăng ký chỉ có nút vào demo khách; `/staff/login` có nút vào demo nhân viên. Chưa có tài khoản, phân quyền hay API auth thật. [Spec luồng đầy đủ](specs/frontend-full-flow.md) và [kế hoạch](planning/frontend-full-flow.md) ghi các bước nghiệm thu.
 
-## Chạy frontend trên Windows
+## Bắt đầu
 
-Frontend này chạy độc lập bằng dữ liệu mock; không cần bật FastAPI, database hoặc cấu hình API key.
+Đọc [WORK_STATUS.md](WORK_STATUS.md) → [AGENTS.md](AGENTS.md) → [spec luồng đầy đủ](specs/frontend-full-flow.md) → [kế hoạch](planning/frontend-full-flow.md). Mỗi User Story có [một file task riêng](tasks/README.md).
 
-### 1. Cài Node.js và pnpm (chỉ làm một lần trên mỗi máy)
+## Chạy trên Windows
 
-Tải **Node.js 24 LTS** từ [trang tải chính thức của Node.js](https://nodejs.org/en/download), chọn bản cài đặt Windows và chạy trình cài đặt. Node.js đi kèm `npm`. Sau khi cài, **đóng PowerShell cũ và mở cửa sổ mới**, rồi kiểm tra:
+Mở PowerShell tại thư mục frontend:
 
-```powershell
-node --version
-npm --version
-```
+    pnpm install --frozen-lockfile
+    pnpm dev
 
-Nếu PowerShell vẫn báo không nhận `node` hoặc `npm`, kiểm tra lại quá trình cài Node.js và mở terminal mới. Tiếp theo cài pnpm bằng npm:
+Mở URL Local do Next.js in ra, thường là http://localhost:3000. Kiểm tra bằng pnpm run typecheck và pnpm run build. Nếu cổng 3000 bận, chạy pnpm exec next dev -p 3001. Dự án dùng Next.js 15.5.10, React 19.1.1 theo package.json; không cần cài Next.js toàn cục.
 
-```powershell
-npm install --global pnpm@11.19.0
-pnpm --version
-```
+`pnpm dev` biên dịch mỗi route ở lần mở đầu. Dev giữ tối đa 12 route đã xem và cache điều hướng trong 10 phút để khi quay lại không phải biên dịch/tải dữ liệu trang lần nữa. Dev dùng cache `.next-dev`, còn `pnpm run build`/`pnpm start` dùng `.next`, nên hai chế độ không ghi đè cache của nhau. Muốn đánh giá tốc độ bản chạy thực tế, dùng `pnpm run build` rồi `pnpm start`.
 
-Các lệnh của dự án đã được kiểm tra với Node.js `v24.19.0` và pnpm `11.19.0`. Nếu lệnh `pnpm` chưa được nhận sau khi cài, mở PowerShell mới rồi thử lại. Thông báo có phiên bản pnpm mới chỉ là gợi ý cập nhật, không cản trở chạy dự án.
+## Ranh giới dữ liệu
 
-### 2. Cài Next.js và chạy dự án
+Bản demo chạy độc lập bằng src/data/mock/vehicles.ts và src/services/mock-services.ts. Giá, pin, sạc, quãng đường và giả định điện/xăng là minh họa; chưa kết nối catalog chính hãng, FastAPI hoặc LLM. Bộ lọc đề xuất dùng mục đích, ngân sách và so sánh quãng đường công bố với km/ngày; đây là logic demo, không bảo đảm quãng đường thực tế. Chatbot demo nhận câu trả lời từng lượt, giữ profile trong trang đang mở, trả lời những câu hỏi catalog nhận diện rõ và từ chối câu khác. Đây là logic theo quy tắc, chưa có LLM/RAG, phân loại tự do tin cậy hoặc chuyển nhân viên thật. Chi tiết xe chỉ có nút mở trang VinFast khi bản ghi chứa URL chính thức đến đúng mẫu; bốn xe Xe X hiện là giả nên không có nút này.
 
-Sau khi clone, mở **PowerShell tại thư mục gốc của repo** (thư mục chứa `frontend`), rồi chạy:
+Code theo Next.js App Router ở src/app; UI theo tính năng ở src/features; kiểu dữ liệu và phép tính ở src/lib. API contract dự kiến nằm trong [specs/api-contracts.md](specs/api-contracts.md). Yêu cầu trả góp/cọc chỉ lưu ẩn danh trong `sessionStorage` và có trạng thái demo; nhân viên xem/xử lý trong cùng tab. Chưa có JWT, nguồn cửa hàng, API hàng đợi hoặc quyết định thật.
 
-```powershell
-Set-Location -LiteralPath '.\frontend'
-Test-Path -LiteralPath 'package.json'
-pnpm install --frozen-lockfile
-pnpm exec next --version
-pnpm dev
-```
+## Đối chiếu kiến trúc
 
-`Test-Path` phải trả về `True`. Lệnh `pnpm install --frozen-lockfile` sẽ tự cài **Next.js 15.5.10**, React và các thư viện được khai báo trong `package.json` vào `frontend/node_modules`; `pnpm exec next --version` xác nhận phiên bản đã cài. Không cần cài Next.js toàn cục hoặc tạo lại dự án bằng `create-next-app` ([hướng dẫn Next.js](https://nextjs.org/docs/app/getting-started/installation)). Giữ terminal chạy và mở URL hiện ở dòng `Local:` (thông thường là <http://localhost:3000>). Dừng server bằng `Ctrl+C`. Nếu bạn dùng **Git Bash / MINGW64**, thay lệnh `Set-Location` bằng `cd frontend`; các lệnh còn lại giữ nguyên.
-
-Nếu cổng `3000` đang được sử dụng, dừng server cũ hoặc chạy `pnpm exec next dev -p 3001` và mở <http://localhost:3001>. Không chạy `pnpm dev` ở thư mục gốc của repo, vì `package.json` nằm trong `frontend`.
-
-Để kiểm tra mã nguồn, dừng dev server trước rồi chạy `pnpm run typecheck` và `pnpm run build`. Muốn chạy bản production, dùng `pnpm start` **sau khi** build thành công; `pnpm start` không thay cho `pnpm dev` ở lần chạy đầu.
-
-## Demo authentication
-
-The browser-only mock session is stored in `localStorage`. Public registration always creates a `user`; it cannot create employee or admin accounts.
-
-| Role | Email | Password | Home |
-|---|---|---|---|
-| User | `user@xex.vn` | `Demo@123` | `/user` |
-| Employee | `employee@xex.vn` | `Demo@123` | `/employee` |
-| Admin | `admin@xex.vn` | `Demo@123` | `/admin` |
-
-Protected routes redirect guests to `/login` and signed-in users without the required role to `/unauthorized`.
-
-## Main routes
-
-- `/` — landing page
-- `/user` — customer dashboard
-- `/advisor` — conversational needs discovery, recommendation, and employee handoff
-- `/vehicles` — filterable vehicle catalog
-- `/compare` — responsive vehicle comparison
-- `/cost` — electric-versus-petrol energy cost calculator
-- `/installment` — installment estimate and staff handoff
-- `/stores` — mock store search and map abstraction
-- `/deposit` — validated mock vehicle-hold flow
-- `/profile` — customer profile and mock activity
-- `/employee` — employee lead queue and status workflow
-- `/sales` — backward-compatible alias for the employee workspace
-- `/admin` — minimal mock-system overview
-- `/login`, `/register` — demo login and public customer registration
-
-## Frontend structure
-
-Business UI is grouped by feature under `src/features` (for example `vehicles`, `consultation`, and `reservation`). Truly reusable UI, layouts, and route guards live under `src/shared`. Next.js App Router entrypoints remain thin files under `src/app`; data, types, contexts, and service boundaries stay outside presentation folders. `src/pages` is intentionally not used because Next.js reserves it for the Pages Router.
-
-## Integration boundary
-
-UI components consume typed service interfaces from `src/lib/api.ts`. The current implementation lives in `src/services/mock-services.ts`; a future FastAPI adapter can replace it without rewriting the pages or domain components.
-
-All vehicle, store, and lead fixtures are isolated in `src/data/mock/`. Numeric vehicle data is explicitly marked as demo data until verified catalog sources are available.
+Xem [kiến trúc frontend](docs/frontend-architecture.md) để biết UI nào tương ứng API dự kiến và trạng thái thực tế. Từ gợi ý trong chat có thể mở bản bàn giao demo ẩn danh tại `/staff` qua lối vào `/staff/login`; bản này chỉ nằm trong tab, không tạo lead hay gửi cho nhân viên.

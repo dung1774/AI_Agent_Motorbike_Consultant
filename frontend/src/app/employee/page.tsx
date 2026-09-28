@@ -1,13 +1,5 @@
-import { ProtectedRoute } from "@/shared/guards/ProtectedRoute";
-import { EmployeeLayout } from "@/shared/layouts/EmployeeLayout";
-import { LeadDashboardView } from "@/features/leads/LeadDashboardView";
+import { redirect } from "next/navigation";
 
 export default function EmployeeRoute() {
-  return (
-    <ProtectedRoute allowedRoles={["employee"]}>
-      <EmployeeLayout>
-        <LeadDashboardView />
-      </EmployeeLayout>
-    </ProtectedRoute>
-  );
+  redirect("/staff");
 }
